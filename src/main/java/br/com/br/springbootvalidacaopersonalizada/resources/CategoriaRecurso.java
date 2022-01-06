@@ -59,4 +59,24 @@ public class CategoriaRecurso {
 	// 			  .toUri();
 	// 	return ResponseEntity.created(uri).build();
 	// }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@RequestBody CategoriaDTO dto, 
+                                       @PathVariable(value = "id") Integer id) {
+
+        // framework que realiza o mapeamento de modelos
+        ModelMapper modelMapper = new ModelMapper();
+        Categoria obj = modelMapper.map(dto, Categoria.class);
+        obj.setId(id);
+        obj = this.service.update(obj);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable(value="id")Integer id) {
+        service.delete(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }
