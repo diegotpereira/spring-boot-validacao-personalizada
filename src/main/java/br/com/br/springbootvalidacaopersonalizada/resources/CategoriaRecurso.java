@@ -2,6 +2,8 @@ package br.com.br.springbootvalidacaopersonalizada.resources;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +39,11 @@ public class CategoriaRecurso {
     }
 
     @PostMapping()
-    public ResponseEntity<Void> insert(@RequestBody Categoria obj) {
+    public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO dto) {
+
+        ModelMapper modelMapper = new ModelMapper();
+        Categoria obj = modelMapper.map(dto, Categoria.class);
+
         obj = this.service.insert(obj);
         URI uri = ServletUriComponentsBuilder
         .fromCurrentRequest().path("/{id}")
