@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import br.com.br.springbootvalidacaopersonalizada.dto.ProdutoDTO;
+import br.com.br.springbootvalidacaopersonalizada.exceptions.ObjectNotFoundException;
 import br.com.br.springbootvalidacaopersonalizada.model.Produto;
 import br.com.br.springbootvalidacaopersonalizada.services.ProdutoService;
 
@@ -24,7 +25,11 @@ public class ProdutoRecurso {
     public ResponseEntity<?> findById(@PathVariable(value="id") String id) {
         ModelMapper modelMapper = new ModelMapper();
 
-        Produto produto = service.findById(Integer.parseInt((id)));
+        Produto produto = service.findById(Integer.parseInt(id));
+
+        if (produto == null) {
+            throw new ObjectNotFoundException("Objeto Produto não encontrado!" + id);
+        }
 
         ProdutoDTO produtoDTO = modelMapper.map(produto, ProdutoDTO.class);
 
